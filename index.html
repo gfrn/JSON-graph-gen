@@ -1,0 +1,83 @@
+<html>
+<head>
+    <meta name="theme-color" content="#043687"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="script.js"></script> 
+
+    <title>JSON Generator</title>
+</head>
+<body>
+    <div class="container">
+        <div class="column">
+            <div class="row">
+                <div class="column">
+                    <label for="Name">Name:</label>
+                    <input class="textform" type="text" id="Name"></form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <label for="HRangeStart">Horizontal Starting Point:</label>
+                    <input type="text" id="HRangeStart" oninput="removeInvalid(this)"></form>
+                </div>
+                <div class="column">
+                    <label for="HRangeEnd">Horizontal End Point:</label>
+                    <input type="text" id="HRangeEnd" oninput="removeInvalid(this)"></form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <label for="VRangeStart">Phase:</label>
+                    <input type="text" id="VRangeStart" oninput="removeInvalid(this)" /></form>
+                </div>
+                <div class="column">
+                    <label for="Amplitude">Amplitude:</label>
+                    <input type="text" id="Amplitude" oninput="removeInvalid(this)"></form>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="column">
+                    <label for="Wavelength">Wavelength:</label>
+                    <input type="text" id="Wavelength" oninput="removeInvalid(this)"></form>
+                </div>
+                <div class="column">
+                    <label for="Step">Horizontal Step Size:</label>
+                    <input type="text" id="Step" oninput="removeInvalid(this)"></form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <label for="waveform">Waveform:</label>
+                    <select id="waveform" name="waveform">
+                        <option value="Sine">Sine</option>
+                        <option value="Possaw">Positive Sawtooth</option>
+                        <option value="Negsaw">Negative Sawtooth</option>
+                        <option value="Square">Square</option>
+                        <option value="Triangle">Triangle</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <button value="CreateGraph" onclick="createGraph()">Create Graph</button>
+                </div>
+            </div>
+        </div>
+    </div>
+       
+    <div class="textarea">
+        <textarea id="ParsedTextArea" cols="40" rows="5"></textarea>
+    </div>
+    
+</body>
+</html>

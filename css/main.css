@@ -1,0 +1,40 @@
+.column {
+    flex: 50%;
+    padding: 0.5em;
+}
+
+body {
+    background-color: beige;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.column *{
+    width: 100%;
+}
+
+.row {
+    display: flex;
+}
+
+.container {
+    width: 30%;
+    height: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    display: inline-block;
+}
+
+.textarea {
+    width:69%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    height: 100%;
+}
+
+.textarea textarea {
+    width: 80%;
+    height: 100%;
+}
