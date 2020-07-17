@@ -11,56 +11,61 @@ function createWaveform(hStart, hEnd, vStart, amplitude, hStep, vStep, name, wav
   switch (waveform)
   {
     case "Possaw":
+      vStep = (amplitude-vStart) / wavelength;
       for(x = hStart; x < hEnd; x+=hStep)
       {
-        y = y > amplitude - vStep ? vStart : y + vStep;
+        y = y + vStep > amplitude ? vStart : y + vStep;
         data[name].push({"x":x, "y":y});
       }
       break;
     case "Negsaw":
-        y = amplitude + vStep;
+        vStep = (amplitude-vStart) / wavelength;
         for(x = hStart; x < hEnd; x+=hStep)
         {
-          y = y < vStart + vStep ? amplitude : y - vStep;
+          y = y - vStep < vStart ? amplitude : y - vStep;
           data[name].push({"x":x, "y":y});
         }
         break;
     case "Triangle":
+      vStep = ((amplitude-vStart) / (wavelength))*2;
+      console.log(vStep);
       let peaked = false;
       for(x = hStart; x < hEnd; x+=hStep)
       {
+        data[name].push({"x":x, "y":y});
         if(peaked)
         {
           peaked = y > vStart + vStep;
-          y-=vStep;
+          y = !peaked ? vStart : y-vStep;
         }
         else
         {
-          peaked = y > amplitude - 2*vStep;
-          console.log(peaked);
-          y+=vStep;
+          peaked = y + vStep > amplitude;
+          y = peaked ? amplitude - vStep : y+vStep;
         }
         
-        data[name].push({"x":x, "y":y});
+        console.log(peaked);
+        console.log(y);
       }
       break;
     case "Square":
-      for(x = hStart; x < hEnd; x+=hStep)
+      for(x = hStart; x < hEnd; x+=wavelength)
       {
         data[name].push({"x":x, "y":y});
-        y = y === vStart ? amplitude : vStart;
+        data[name].push({"x":x+hStep, "y":y == vStart ? amplitude : vStart});
       }
       break;
     case "Sine":
       for(x = hStart; x < hEnd; x+=hStep)
       {
-        y = amplitude*Math.sin(2*Math.PI*(1/(wavelength-1))*x).toFixed(2);
+        console.log(x);
+        y = amplitude*Math.sin(2*Math.PI*(1/(wavelength))*x).toFixed(2);
         data[name].push({"x":x, "y":y});
       }
       break;
   }
   
-  return(JSON.stringify(data, null, 4));
+  return data;
 }
 
 function createGraph() {
@@ -79,5 +84,38 @@ function createGraph() {
 
   let name = document.getElementById("Name").value;
 
-  document.getElementById("ParsedTextArea").value = createWaveform(hStart, hEnd, vStart, amplitude, hStep, vStep, name, waveform, wavelength);
+  let data = createWaveform(hStart, hEnd, vStart, amplitude, hStep, vStep, name, waveform, wavelength);
+
+  document.getElementById("ParsedTextArea").value = JSON.stringify(data, null, 4);
+  let canvas = document.getElementById('chart').getContext('2d');
+  var ctx = canvas;
+  $("canvas").css({"background-color": "white"});
+
+  var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data[name].map(({ x }) => x),
+      datasets: [{
+          label: name,
+          data: data[name].map(({ y }) => y),
+      }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+              distribution: "linear",
+              ticks: {
+                source: "auto"
+              }
+            }],
+            yAxes: [{
+                ticks: {
+                    autoSkip: true,
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+  });
+
 }
